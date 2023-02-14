@@ -10,7 +10,7 @@
 export default {
   mounted() {
     this.$api.homeApi.getMsg().then((result) => {
-      console.log(result);
+      console.log(result, 111);
     });
   },
 };
