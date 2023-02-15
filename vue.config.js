@@ -9,9 +9,7 @@ function resolve(dir) {
 // const Components = require('unplugin-vue-components/webpack')
 // const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 
-
 module.exports = {
-
   css: {
     loaderOptions: {
       scss: {
@@ -19,7 +17,6 @@ module.exports = {
       },
     },
   },
-
 
   chainWebpack: config => {
     config.module
