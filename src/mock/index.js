@@ -1,10 +1,6 @@
-const ms = require.context('./modules', false, /\.js$/)
+import { importAll } from '../utils/modules'
 
-const modules = {}
+const modules = importAll(require.context('./modules', false, /\.js$/))
 
-ms.keys().forEach(item => {
-    const name = item.substring(2, item.length - 3);
-    modules[name] = ms(item).default;
-});
 
 export default modules
