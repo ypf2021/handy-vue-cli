@@ -3,7 +3,13 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav>
-  <router-view />
+  <!-- <router-view></router-view> -->
+
+  <router-view v-slot="{ Component }">
+    <keep-alive include="HomeView">
+      <component :is="Component"></component>
+    </keep-alive>
+  </router-view>
 </template>
 
 <script>

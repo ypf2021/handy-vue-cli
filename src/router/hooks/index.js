@@ -4,6 +4,7 @@ import { isAuthenticated } from '@/utils/login'
 export function addRouterHooks(router) {
     // 全局路由守卫
     router.beforeEach(async (to) => {
+        console.log("login beforeEach")
         const hashTitle = to.meta.title
         document.title = hashTitle ? hashTitle : "项目名"
         if (!config.useBeforeEach) {
@@ -15,4 +16,15 @@ export function addRouterHooks(router) {
         }
     })
 
+    router.beforeEach((to, from) => {
+        if (!from.meta.keepAlive || !from.meta.keepElement) {
+        } else {
+            const $content = document.querySelector(from.meta.keepElement);
+            const scrollTop = $content ? $content.scrollTop : 0;
+            console.log("$content:", $content)
+            console.log("scrollTop:", scrollTop)
+            from.meta.scrollTop = scrollTop;
+        }
+        console.log("to:", to, ",from:", from)
+    })
 }
