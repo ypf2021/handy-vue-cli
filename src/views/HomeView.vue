@@ -15,13 +15,13 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
-// import { keepScroll } from "@/mixin/keepScroll.js";
+import { keepScroll } from "@/mixin/keepScroll.js";
 export default {
   name: "HomeView",
   components: {
     HelloWorld,
   },
-  // mixins: [keepScroll],
+  mixins: [keepScroll],
   data() {
     return {
       list: [
