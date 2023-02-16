@@ -1,6 +1,6 @@
 import config from '@/config/myConfig'
 import { isAuthenticated } from '@/utils/login'
-import { localSet } from '@/utils/storage'
+import Storage from '@/utils/storage'
 
 export function addRouterHooks(router) {
     // 全局路由守卫
@@ -24,8 +24,7 @@ export function addRouterHooks(router) {
             const scrollTop = $content ? $content.scrollTop : 0;
             console.log("$content:", $content)
             console.log("scrollTop:", scrollTop)
-            // from.meta.scrollTop = scrollTop;
-            localSet("scrollVal", scrollTop)
+            Storage.setItem("scrollVal", scrollTop)
         }
     })
 

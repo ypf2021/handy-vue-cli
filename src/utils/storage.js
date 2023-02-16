@@ -1,50 +1,4 @@
 // 序列化存储 && 添加过期时间
-
-
-/**
- * 存储localstorafe
- * @export
- * @param {*} key
- * @param {*} value
- */
-export function localSet(key, value) {
-    window.localStorage.setItem(key, JSON.stringify(value))
-}
-
-/**
- * 读取localStorage
- * @export
- * @param {*} key
- * @return {*} value || JSON.parse(value)
- */
-export function localGet(key) {
-    const value = window.localStorage.getItem(key)
-    try {
-        return JSON.parse(value)
-    } catch (error) {
-        return value
-    }
-}
-
-/**
- * 删除指定loaclStorage
- * @export
- * @param {*} key
- */
-export function localRemove(key) {
-    window.localStorage.removeItem(key)
-}
-
-/**
- * 清空
- * @export
- */
-export function clearLoacl() {
-    window.localStorage.clear()
-}
-
-
-
 class Storage {
     constructor(name) {
         this.name = 'storage';
@@ -84,6 +38,11 @@ class Storage {
     //拿到缓存
     getItem(key) {
         let item = localStorage.getItem(key);
+        if (!item) {
+            // 没有值时 item为null
+            return false
+        }
+
         //先将拿到的试着进行json转为对象的形式
         try {
             item = JSON.parse(item);
