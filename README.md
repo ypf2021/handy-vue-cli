@@ -355,6 +355,12 @@ const tologin = MockServe(
 
 最后 Mock/index.js 会自动收集所有模块，并引入到主函数 main.js
 
+## localStorage的封装
+
+localStorage封装在 utils/storage.js下，  在setItem 时有三个参数 key，value，expires(过期时间)，设置了过期时间之后就会自动记录当前时间，并存起来， 获取值时判断是否过期，过期的化 get返回fasle，并把浏览器中存的内容删除，如果没有第三个参数的化，就和普通的 api操作方式一样
+
+![image-20230216120014651](https://gitee.com/yan-running-potato/typora-diagram/raw/master/image-20230216120014651.png)
+
 ## gitHooks 与 commitlint
 
 本脚手架的 gitHooks 会在代码提交前，格式化所有代码并使用 commitlint 对提交信息进行检验,如果提交信息非法会拒绝提交代码

@@ -1,4 +1,4 @@
-import HomeView from '@/views/HomeView.vue'
+
 
 export default {
     path: '/',
@@ -7,5 +7,6 @@ export default {
         keepElement: '.outer',
         keepAlive: true
     },
-    component: HomeView
+    component: () => import(/* webpackChunkName: "HomeView" */ '@/views/HomeView.vue')
+
 }       
