@@ -1,15 +1,15 @@
 const path = require('path');
+const { merge } = require('webpack-merge')
+
 function resolve(dir) {
   console.log("resolve", path.join(__dirname, '.', dir))
   return path.join(__dirname, '.', dir);
 }
 
-// ElementUI
-// const AutoImport = require('unplugin-auto-import/webpack')
-// const Components = require('unplugin-vue-components/webpack')
-// const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
-
 module.exports = {
+  publicPath: './',
+  assetsDir: 'static',
+
   css: {
     loaderOptions: {
       scss: {
@@ -19,11 +19,18 @@ module.exports = {
   },
 
   chainWebpack: config => {
+    // 没写后缀时 只匹配 js 和 vue
+    config.resolve.extensions
+      .clear()
+      .add('.js')
+      .add('.vue')
+
+    // 去掉原本的svg处理
     config.module
       .rule('svg')
       .exclude.add(resolve('src/assets/icon'))
       .end();
-
+    // 加上 svg封装组件的loader
     config.module
       .rule('icons')
       .test(/\.svg$/)
@@ -34,6 +41,32 @@ module.exports = {
       .options({
         symbolId: 'icon-[name]'
       });
+
+    // 添加小图片转为base64(不设置时默认会将小于8kb进行base64转换)
+    config.module
+      .rule('images')
+      .parser({
+        dataUrlCondition: { maxSize: 10 * 1024 }
+      })
+
+    // 避免重复引入，去除node_modules
+    config.module
+      .rule('js')
+      .exclude
+      .add(/node_modules/)
+      .end()
+      .use('babel-loader')
+      .tap(options => merge(options, {
+        plugins: ["@babel/plugin-transform-runtime"]
+      }))
+
+    config
+      .plugin('html')
+      .tap(args => {
+        args[0].cache = true
+        args[0].cacheLoaction = resolve('/node_modules/.cache/eslintcache')
+        return args
+      })
 
   },
   devServer: {
