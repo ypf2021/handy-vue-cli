@@ -1,8 +1,9 @@
 export default {
-    path: '/about',
-    name: 'about',
+    path: "/about",
+    name: "about",
     meta: {
-        title: "主页"
+        title: "主页",
     },
-    component: () => import(/* webpackChunkName: "about" */ '@/views/AboutView.vue')
-}
+    component: () =>
+        import(/* webpackChunkName: "about" */ "@/views/AboutView.vue"),
+};
