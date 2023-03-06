@@ -1,10 +1,10 @@
-import Vlist from '@/views/VirtualList.vue'
+import Vlist from "@/views/VirtualList.vue";
 
 export default {
-    path: '/vlist',
-    name: 'Vlist',
+    path: "/vlist",
+    name: "Vlist",
     meta: {
-        title:'虚拟列表'
+        title: "虚拟列表",
     },
-    component: Vlist
-}       
+    component: Vlist,
+};

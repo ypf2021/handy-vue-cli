@@ -1,11 +1,6 @@
 <template>
   <div style="height: 400px; width: 1000px; margin: 0 auto; border: 1px solid">
-    <vlist
-      :listData="data"
-      :itemSize="100"
-      v-slot="slotProps"
-      :estimatedItemSize="70"
-    >
+    <vlist :listData="data" v-slot="slotProps" :estimatedItemSize="70">
       <Item :item="slotProps.item"></Item>
     </vlist>
   </div>

@@ -279,20 +279,6 @@ meta 属性还可以用来配置路由的权限,当配置了此权限后，只�
 
 directive 文件夹下的 index.js 会**自动收集**模块中所有的自定义指令并作为插件挂载到 Vue 上，因此，如果要添加全局自定义指令，只需要在 src/directive 文件夹下创建自定义指令名命名的 JS 文件并暴露出去即可
 
-## iconfont 的使用
-
-iconfont 已经被封装成组件并挂载到全局，在任意组件中无需引入即可使用
-
-```js
-<vue-icon iconClass="bofang" color="red"></vue-icon>
-```
-
-iconClass 是一个必选项，要根据 iconfont 官网中项目的名字来写,名字前去掉 icon，其余可以传的属性还包括：
-
-color,width,height,cursor
-
-对于 icon 这个组件封装的思路是 通过识别文件夹下的 .svg 文件，自动导入再根据 svg-sprite-loader，生成雪碧图，最后导入到全局。如果想增删图片只需要对文件夹下的 svg 文件做操作即可，不需要重复下更新 symbol.js
-
 ## 全局组件注册
 
 当涉及全局组件的注册时，要在 src/components/components.js 中引入组件并按照以下方法进行注册
@@ -302,6 +288,48 @@ install(app) {
       app.component('VueIcon', icon);
   },
 ```
+
+#### 虚拟列表组件
+
+目录：`@/components/VList`
+
+```html 
+    <vlist
+      :listData="data"
+      :estimatedItemSize="70"
+      v-slot="slotProps"
+    >
+      <Item :item="slotProps.item"></Item>
+    </vlist>
+```
+
+**参数**：`listData,estimatedItemSize,height,bufferScale`
+
+分别为：数据列表，每一项数据预估高度，列表容器高度（默认父元素100%），缓冲区域和真实显示区域的比例（默认1）
+
+**插槽**：列表项的组件，可自定义
+
+**实现原理**：传入数据后，先根据预估高度和数据量初始化位置信息，根据预估高度和窗口大小预定可呈现数据量，并且通过 缓存数据比例 添加缓存数据的量。并将这些量的数据截取 listData 呈现到页面上。监听滑动事件，根据滚动条送高度，计算 start索引和end索引之间对应的元素，进行渲染。同时每次要渲染都会更新位位置信息。
+
+**特点**：解决动态元素高度，有缓存数据防止白屏闪烁
+
+#### iconfont组件
+
+目录：`@/components/icon`
+
+iconfont 已经被封装成组件并挂载到全局，在任意组件中无需引入即可使用
+
+```js
+<vue-icon iconClass="bofang" color="red"></vue-icon>
+```
+
+iconClass 是一个必选项，要根据 iconfont 官网中项目的名字来写,名字前去掉 icon，其余可以传的属性还包括：
+
+`color,width,height,cursor`
+
+对于 icon 这个组件封装的思路是 通过识别文件夹下的 .svg 文件，自动导入再根据 svg-sprite-loader，生成雪碧图，最后导入到全局。如果想增删图片只需要对文件夹下的 svg 文件做操作即可，不需要重复下更新 symbol.js
+
+**特点：**不需要每次重新导入下载包，只需要添加相应的svg文件即可
 
 ## Mock 的封装
 
