@@ -42,8 +42,15 @@ export default {
       type: String,
       default: "100%",
     },
+
+    // 缓冲区域和真实显示区域的比例
+    bufferScale: {
+      type: Number,
+      default: 1,
+    },
   },
   computed: {
+    // 简单处理一下数据，呈现时呈现的是这个里面的item
     _listData() {
       return this.listData.map((item, index) => {
         return {
@@ -61,7 +68,24 @@ export default {
 
     //获取真实显示列表数据
     visibleData() {
-      return this._listData.slice(this.start, this.end);
+      console.log(this.aboveCount);
+      let start = this.start - this.aboveCount;
+      console.log("start:", this.start);
+      let end = this.end + this.belowCount;
+      // 将缓存区的数据也截取出来，但显示还是根据 this.start 计算 offsetTop 的
+      return this._listData.slice(start, end);
+    },
+
+    // 上面的缓存数据
+    aboveCount() {
+      return Math.min(this.start, this.bufferScale * this.visibleCount);
+    },
+    // 下面的缓存数据
+    belowCount() {
+      return Math.min(
+        this.listData.length - this.end,
+        this.bufferScale * this.visibleCount
+      );
     },
   },
 
@@ -151,8 +175,17 @@ export default {
 
     //获取当前的偏移量 偏移量就是滚动条所处在的位置
     setStartOffset() {
-      let startOffset =
-        this.start >= 1 ? this.positions[this.start - 1].bottom : 0;
+      let startOffset;
+      if (this.start >= 1) {
+        let size =
+          this.positions[this.start].top -
+          (this.positions[this.start - this.aboveCount]
+            ? this.positions[this.start - this.aboveCount].top
+            : 0);
+        startOffset = this.positions[this.start - 1].bottom - size;
+      } else {
+        startOffset = 0;
+      }
       this.$refs.content.style.transform = `translate3d(0,${startOffset}px,0)`;
     },
   },

@@ -14,6 +14,7 @@
 <script>
 import vlist from "@/components/VList/index.vue";
 import Item from "@/components/VList/Item.vue";
+// 模拟数据的库
 import faker from "faker";
 
 let data = [];
